@@ -116,75 +116,77 @@ processed_patients_df = patient_df.dropDuplicates() \
     .withColumn("loaded_data", current_date())
 ```
 
-Governance with Unity Catalog
+## Governance with Unity Catalog
 
-Unity Catalog was used to:
+**Unity Catalog** was used to provide enterprise-grade data governance across the pipeline:
 
-Secure access between Databricks and ADLS
+- Secure access between **Azure Databricks** and **Azure Data Lake Storage (ADLS)**
+- Centralized credential and permission management
+- Fine-grained access control at the catalog, schema, and table levels
+- Production-ready governance for scalable data platforms
 
-Manage credentials centrally
+This setup ensures **secure, auditable, and consistent data access** across all environments.
 
-Enforce fine-grained data access control
+---
 
-Enable production-grade governance
+## Orchestration with Azure Data Factory
 
-This ensures scalable and secure data access across environments.
+> **Insert Azure Data Factory Pipeline Screenshot Here**
 
-Orchestration with Azure Data Factory
+**Azure Data Factory (ADF)** is responsible for orchestrating the entire ETL workflow.
 
-Insert Azure Data Factory Pipeline Screenshot Here
+### ADF Pipeline Responsibilities
 
-ADF pipelines perform:
+- Execute Databricks notebooks for data cleaning and transformation
+- Copy processed data from **ADLS → Azure SQL staging tables**
+- Load data from **staging tables → EDW tables** using SQL logic
 
-Databricks notebook execution
+### Key ADF Components
 
-Copy activity from ADLS - Azure SQL (staging)
+- **Linked Services**
+  - Azure Data Lake Storage
+  - Azure SQL Database
+- **Datasets**
+  - CSV files in ADLS
+  - Tables in Azure SQL
+- **Copy Activities**
+- **Pipeline sequencing and dependency management**
 
-SQL-based loading from staging - EDW
+---
 
-Key ADF Components
+## Data Warehouse (Azure SQL)
 
-Linked Services (ADLS, Azure SQL)
+The **Enterprise Data Warehouse (EDW)** is implemented using **Azure SQL Database**.
 
-Datasets (CSV files, SQL tables)
+- Hosts both **staging** and **EDW** layers
+- Schemas created using structured SQL scripts
+- Data loaded via **ADF copy activities**
+- Optimized for analytical querying and reporting
 
-Copy Activities
+---
 
-Pipeline sequencing & dependency management
+## How to Run the Pipeline
 
-Data Warehouse (Azure SQL)
+1. Upload raw CSV files to the ADLS `/raw` folder
+2. Configure the Azure Databricks workspace and compute cluster
+3. Set up **Unity Catalog** and grant ADLS access
+4. Run the Databricks notebook to generate processed datasets
+5. Trigger the Azure Data Factory pipeline
+6. Validate loaded data in Azure SQL EDW tables
 
-Azure SQL Database hosts staging and EDW layers
+---
 
-Schemas created using SQL scripts
+## Resources
 
-Data loaded via ADF copy activities
+- **Databricks Notebook**: Attached in the repository
+- **SQL Scripts**: Included in the `/data_modelling` folder
+- **Architecture Diagram**: Included in the `/architecture` folder
 
-How to Run the Pipeline
+---
 
-Upload raw CSV files to ADLS /raw folder
+## Author
 
-Configure Databricks workspace and cluster
-
-Set up Unity Catalog and ADLS access
-
-Run Databricks notebook to generate processed data
-
-Trigger Azure Data Factory pipeline
-
-Validate data in Azure SQL EDW tables
-
-Resources
-
-Databricks Notebook: Attached in repository
-
-SQL Scripts: Included in /data modelling folder
-
-Architecture Diagram: Included in /Architecture folder
-
-Author
-
-Muhammed Sulaimon
-Data Engineer | Azure | Spark | SQL
+**Muhammed Sulaimon**  
+_Data Engineer | Azure | Spark | SQL_
 
 If you found this project helpful, feel free to ⭐ the repository!
